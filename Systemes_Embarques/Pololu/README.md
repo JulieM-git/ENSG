@@ -14,6 +14,8 @@ Composants utilisés :
 	- OUT sur la pin 22
 	- VDD sur 3,3 V ou 5 VDD
 	- GND sur ground
+	
+Pour prendre une photo : https://www.raspberrypi.org/documentation/usage/camera/raspicam/raspistill.md
 
 Ligne de commande pour compiler et lancer le programme : 
 
