@@ -1,0 +1,157 @@
+prof@ubuntu:~/Bureau/TD_TP_1_MPI$ ./Mandel 
+Usage:
+      mandel dimx dimy xmin ymin xmax ymax prof
+
+      dimx,dimy : dimensions de l'image a generer
+      xmin,ymin,xmax,ymax : domaine a calculer dans le plan complexe
+      prof : nombre maximale d'iteration
+
+Quelques exemples d'execution
+      mandel 800 800 0.35 0.355 0.353 0.358 200
+      mandel 800 800 -0.736 -0.184 -0.735 -0.183 500
+      mandel 800 800 -0.736 -0.184 -0.735 -0.183 300
+      mandel 800 800 -1.48478 0.00006 -1.48440 0.00044 100
+      mandel 800 800 -1.5 -0.1 -1.3 0.1 10000
+
+Domaine: {[-2,-2]x[2,2]}
+Increment : 0.00500626 0.00500626
+Prof: 10000
+Dim image: 800x800
+Temps total de calcul : 5.39382 sec
+5.39382
+
+prof@ubuntu:~/Bureau/TD_TP_1_MPI$ ./Mandel 800 800 0 0 0.5 0.5 200
+Domaine: {[0,0]x[0.5,0.5]}
+Increment : 0.000625782 0.000625782
+Prof: 200
+Dim image: 800x800
+Temps total de calcul : 0.828152 sec
+0.828152
+
+prof@ubuntu:~/Bureau/TD_TP_1_MPI$ ./Mandel 800 800 0 0 0.5 1 200
+Domaine: {[0,0]x[0.5,1]}
+Increment : 0.000625782 0.00125156
+Prof: 200
+Dim image: 800x800
+Temps total de calcul : 0.510374 sec
+0.510374
+
+prof@ubuntu:~/Bureau/TD_TP_1_MPI$ ./Mandel 800 800 0 0 1 0.5 200
+Domaine: {[0,0]x[1,0.5]}
+Increment : 0.00125156 0.000625782
+Prof: 200
+Dim image: 800x800
+Temps total de calcul : 0.449606 sec
+0.449606
+
+prof@ubuntu:~/Bureau/TD_TP_1_MPI$ ./Mandel 800 800 -0.5 0 0.5 0.5 200
+Domaine: {[-0.5,0]x[0.5,0.5]}
+Increment : 0.00125156 0.000625782
+Prof: 200
+Dim image: 800x800
+Temps total de calcul : 0.990163 sec
+
+0.990163
+prof@ubuntu:~/Bureau/TD_TP_1_MPI$ ./Mandel 800 800 0 -0.5 0.5 0.5 200
+Domaine: {[0,-0.5]x[0.5,0.5]}
+Increment : 0.000625782 0.00125156
+Prof: 200
+Dim image: 800x800
+Temps total de calcul : 0.863601 sec
+0.863601
+
+prof@ubuntu:~/Bureau/TD_TP_1_MPI$ ./Mandel 800 800 -2 -2 2 2 200
+Domaine: {[-2,-2]x[2,2]}
+Increment : 0.00500626 0.00500626
+Prof: 200
+Dim image: 800x800
+Temps total de calcul : 0.143389 sec
+0.143389
+
+prof@ubuntu:~/Bureau/TD_TP_1_MPI$ ./Mandel 2000 2000 -2 -2 2 2 200
+Domaine: {[-2,-2]x[2,2]}
+Increment : 0.002001 0.002001
+Prof: 200
+Dim image: 2000x2000
+Temps total de calcul : 0.841393 sec
+0.841393
+
+prof@ubuntu:~/Bureau/TD_TP_1_MPI$ ./Mandel 800 800 -2 -2 2 2 2000
+Domaine: {[-2,-2]x[2,2]}
+Increment : 0.00500626 0.00500626
+Prof: 2000
+Dim image: 800x800
+Temps total de calcul : 1.09265 sec
+1.09265
+
+prof@ubuntu:~/Bureau/TD_TP_1_MPI$ ./Mandel 800 800 -2 -2 2 2 20000
+Domaine: {[-2,-2]x[2,2]}
+Increment : 0.00500626 0.00500626
+Prof: 20000
+Dim image: 800x800
+Temps total de calcul : 10.5759 sec
+10.5759
+
+prof@ubuntu:~/Bureau/TD_TP_1_MPI$ ./Mandel 800 800 -2 -2 2 2 200000
+Domaine: {[-2,-2]x[2,2]}
+Increment : 0.00500626 0.00500626
+Prof: 200000
+Dim image: 800x800
+Temps total de calcul : 108.304 sec
+108.304
+
+prof@ubuntu:~/Bureau/TD_TP_1_MPI$ ./Mandel 800 800 -2 -2 2 2 20
+Domaine: {[-2,-2]x[2,2]}
+Increment : 0.00500626 0.00500626
+Prof: 20
+Dim image: 800x800
+Temps total de calcul : 0.0482779 sec
+0.0482779
+
+prof@ubuntu:~/Bureau/TD_TP_1_MPI$ ./Mandel 800 800 -2 -2 2 2 2
+Domaine: {[-2,-2]x[2,2]}
+Increment : 0.00500626 0.00500626
+Prof: 2
+Dim image: 800x800
+Temps total de calcul : 0.0264649 sec
+0.0264649
+
+
+prof@ubuntu:~/Bureau/TD_TP_1_MPI$ ./Mandel 8000 8000 -2 -2 2 2 200
+Domaine: {[-2,-2]x[2,2]}
+Increment : 0.000500063 0.000500063
+Prof: 200
+Dim image: 8000x8000
+Temps total de calcul : 13.361 sec
+13.361
+
+prof@ubuntu:~/Bureau/TD_TP_1_MPI$ ./Mandel 1000 1000 -2 -2 2 2 200
+Domaine: {[-2,-2]x[2,2]}
+Increment : 0.004004 0.004004
+Prof: 200
+Dim image: 1000x1000
+Temps total de calcul : 0.213748 sec
+0.213748
+
+prof@ubuntu:~/Bureau/TD_TP_1_MPI$ ./Mandel 10000 10000 -2 -2 2 2 200
+Domaine: {[-2,-2]x[2,2]}
+Increment : 0.00040004 0.00040004
+Prof: 200
+Dim image: 10000x10000
+Temps total de calcul : 20.8596 sec
+20.8596
+
+prof@ubuntu:~/Bureau/TD_TP_1_MPI$ ./Mandel 10000 10000 -2 -2 2 2 2000
+Domaine: {[-2,-2]x[2,2]}
+Increment : 0.00040004 0.00040004
+Prof: 2000
+Dim image: 10000x10000
+Temps total de calcul : 175.366 sec
+175.366
+
+
+
+
+
+
+
