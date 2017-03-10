@@ -23,7 +23,6 @@ Récupérer le nom de la carte SD : /dev/sdX ou /dev/mmcblk0  (un truc dans le g
 Interface graphique de gestion de partition : GParted
 
 Etape 1 : sélectionner le bon disque/carte SD (en haut à droite)
-
 Etape 2 : sélectionner toutes les partitions présentes dans la liste et supprimer les (avec "Supprimer la partition sélectionnée)
 
 ```sh
