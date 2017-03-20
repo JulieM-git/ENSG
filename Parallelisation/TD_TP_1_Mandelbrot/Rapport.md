@@ -107,10 +107,10 @@ Connexion des Raspberry entre eux
 
 https://www.raspberrypi.org/documentation/remote-access/ssh/passwordless.md
 http://raspberrypi.stackexchange.com/questions/1686/how-do-i-set-up-ssh-keys-to-log-into-my-rpi
-
+```
 ssh-keygen -t dsa
 ssh-copy-id -i ~/.ssh/id_dsa.pub pi@piensg005
-
+```
 
 Sur raspberry :
 
