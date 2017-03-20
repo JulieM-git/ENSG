@@ -54,7 +54,7 @@ Les résultats suivant sont répertoriés dans le [fichier](./Tests) et les [ima
 | 8000 | 8000 | -2 | -2 | 2 | 2 | 200 | 13.361 |
 | 10000 | 10000 | -2 | -2 | 2 | 2 | 200 | 20.8596 |
 
-![taille](./Diagrammes/taille_temps.PNG)
+![taille](./Diagrammes/taille_temps.PNG)  
 *Conclusion* : Plus la taille est grande, plus le temps est long.
 
  - Avec variation de la profondeur :
@@ -67,7 +67,7 @@ Les résultats suivant sont répertoriés dans le [fichier](./Tests) et les [ima
 | 800 | 800 | -2 | -2 | 2 | 2 | 20000 | 10.5759 |
 | 800 | 800 | -2 | -2 | 2 | 2 | 200000 | 108.304 |
 
-![profondeur](./Diagrammes/profondeur_temps.PNG)
+![profondeur](./Diagrammes/profondeur_temps.PNG)  
 *Conclusion* : Plus la profondeur est grande, plus le temps est long de manière quasi-linéaire.
 
 Autre exemple :
