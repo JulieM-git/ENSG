@@ -140,6 +140,7 @@ SINON
 FIN SI
 ```
 
+- Sur ordinateur :
 
 Commandes de compilation avec MPI et lancement de l'exécutable :
 ```sh
@@ -147,7 +148,6 @@ mpicc -o mandel_paral mandel_paral.c -lm
 mpirun -np 4 ./mandel_paral
 ```
 
-Sur ordi :
 ```sh
 mpirun -np 2 ./mandel_paral
 Temps total de calcul : 1.53169 sec
@@ -158,8 +158,16 @@ Temps total de calcul : 1.38156 sec
 mpirun -np 16 ./mandel_paral
 Temps total de calcul : 1.84954 sec
 ```
+![ordi](./Diagrammes/np_ordi.PNG)
 
-Sur raspberry :
+
+- Sur raspberry :
+
+Commandes de compilation avec MPI et lancement de l'exécutable :
+```sh
+mpicc -o mandel_paral mandel_paral.c -lm
+mpiexec -np 4 ./mandel_paral
+```
 
 ```sh
 mpiexec -np 1 ./mandel_paral
@@ -212,6 +220,7 @@ mpiexec -np 32 ./mandel_paral
 
 Temps total de calcul : 19.8775 sec
 ```
+![raspberry](./Diagrammes/np_raspberry.PNG)
 
 Sans les printf: Temps équivalent
 
