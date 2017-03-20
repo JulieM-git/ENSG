@@ -2,7 +2,7 @@
 
 ### Question 1 ###
 
-Les indices pour parcourir les pixels de l'image sont : 
+Les indices pour parcourir les pixels de l'image sont :
 - i de 0 à H-1
 - j de 0 à W-1
 
@@ -12,15 +12,67 @@ Le calcul s'effectue dan sle plan complexe, on associe une coordonnée (x,y) à 
 
 ### Question 2 ###
 
-Compilation et exécution : 
+Compilation et exécution :
 ```sh
 gcc -o Mandel mandel.c -lm; ./Mandel
 ```
 
-Exécution avec des paramètres : 
+Exécution avec des paramètres :
 ```sh
 ./Mandel h w xmin ymin xmax ymax profondeur
 ```
+
+Test des paramètres :
+
+Les résultats suivant sont répertoriés dans le [fichier](./Tests) et les [images](./Images) résultantes pour la visualisation.
+
+- Avec les valeurs de base :
+
+| h | w | xmin | ymin | xmax | ymax | prof | temps (sec) |
+| :-----: | :-----: | :-----: | :-----: | :-----: | :-----: | :-----:| ------: |
+| - | - | - | - | - | - | - | 5.39382 |
+
+- Avec variation des x/y :   
+
+| h | w | xmin | ymin | xmax | ymax | prof | temps (sec) |
+| :-----: | :-----: | :-----: | :-----: | :-----: | :-----: | :-----:| ------: |
+| 800 | 800 | 0 | 0 | 0.5 | 0.5 | 200 | 0.828152 |
+| 800 | 800 | 0 | 0 | 0.5 | 1 | 200 | 0.510374 |
+| 800 | 800 | 0 | 0 | 1 | 0.5 | 200 | 0.449606 |
+| 800 | 800 | -0.5 | 0 | 0.5 | 0.5 | 200 | 0.990163 |
+| 800 | 800 | 0 | -0.5 | 0.5 | 0.5 | 200 | 0.863601 |
+
+*Conclusion* :
+
+- Avec variation de la taille :   
+
+| h | w | xmin | ymin | xmax | ymax | prof | temps (sec) |
+| :-----: | :-----: | :-----: | :-----: | :-----: | :-----: | :-----:| ------: |
+| 800 | 800 | -2 | -2 | 2 | 2 | 200 | 0.143389 |
+| 1000 | 1000 | -2 | -2 | 2 | 2 | 200 | 0.213748 |
+| 2000 | 2000 | -2 | -2 | 2 | 2 | 200 | 0.841393 |
+| 8000 | 8000 | -2 | -2 | 2 | 2 | 200 | 13.361 |
+| 10000 | 10000 | -2 | -2 | 2 | 2 | 200 | 20.8596 |
+![taille](./Diagrammes/taille_temps.png)
+*Conclusion* : Plus la taille est grande, plus le temps est long.
+
+ - Avec variation de la profondeur :
+
+| h | w | xmin | ymin | xmax | ymax | prof | temps (sec) |
+| :-----: | :-----: | :-----: | :-----: | :-----: | :-----: | :-----:| ------: |
+| 800 | 800 | -2 | -2 | 2 | 2 | 2 | 0.0264649 |
+| 800 | 800 | -2 | -2 | 2 | 2 | 20 | 0.0482779 |
+| 800 | 800 | -2 | -2 | 2 | 2 | 2000 | 1.09265 |
+| 800 | 800 | -2 | -2 | 2 | 2 | 20000 | 10.5759 |
+| 800 | 800 | -2 | -2 | 2 | 2 | 200000 | 108.304 |
+![profondeur](./Diagrammes/profondeur_temps.png)
+*Conclusion* : Plus la profondeur est grande, plus le temps est long de manière quasi-linéaire.
+
+Autre exemple :
+
+| h | w | xmin | ymin | xmax | ymax | prof | temps (sec) |
+| :-----: | :-----: | :-----: | :-----: | :-----: | :-----: | :-----:| ------: |
+| 10000 | 10000 | -2 | -2 | 2 | 2 | 2000 | 175.366 |
 
 
 ### Question 3 ###
@@ -30,56 +82,64 @@ Le calcul aux différentes profondeurs (fonction xy2color) n'est pas parallélis
 Nous allons découper le tableau en fonction du nombre de processeur. Il faut s'intérresser à quel rang va commencer le traitement ainsi que la taille.
 
 ##### Architecture des processeurs à mémoire distribuée : #####
-
-Si P : nombre de processus
-h_local = H/P, si n'est pas entier
-	si H[P] différent de 0 alors on sort du programme et on demande un autre P
-Par choix on découpe suivant la hauteur. La largeur reste la même. Le tableau est rangé par ligne dans la mémoire, c'est un choix de facilité et d'optimisation.
-
-Xinc et Yinc ne change pas pendant l'exécution, ils dépendent des paramètres d'entrée.
-En découpant, Ymin change en Ymin_loc pour chaque processus et X min reste le même.
-Ymin_loc = Ymin * rank * Yinc
-
-Données : 
-H : Hauteur tableau
-W : largeur tableau
-rank : rang du processus
+```
+Données :   
+H : Hauteur tableau  
+W : largeur tableau  
+rank : rang du processus  
 H_local : hauteur d'un bloc
 ```
-Si rank == MAITRE 
-alors pima = ima = malloc(w*h*sizeof(unsigned char));
-sinon pima = ima = malloc(w*h_local*sizeof(unsigned char));
+Test du début :
 ```
-Algo du Maitre
+P : nombre de processus  
+SI H[P] différent de 0
+	ALORS on sort du programme ou on demande un autre P
+SINON
+	h_local = H/P  
 ```
-si rank == MAITRE
-alors 
-//allocation dynamique de l'image global
-//test de l'allocation
-//calcul de la position du début de l'image local du maitre pima <- rank*w*H_local>
+Par choix on découpe suivant la hauteur. La largeur reste la même. Car le tableau est rangé par ligne dans la mémoire, c'est un choix de facilité et d'optimisation.  
+Xinc et Yinc ne change pas pendant l'exécution, ils dépendent des paramètres d'entrée.
+En découpant, Ymin change en Ymin_loc pour chaque processus et X min reste le même.
 ```
-
-Algo Envoi
+Ymin_loc = Ymin * rank * Yinc
 ```
-Si rank == MAITRE
-alors pour tous les ouvriers
-//attente d'un message
-MPI_Probe();
-s = 
-
-si s == MAITRE
-alors 
-//assemblage des bloc
-MPI_Recv()
-fin si
-
-sinon 
-MPI_Send()
-fin si
+Gestion de la mémoire :
+```
+SI rank == MAITRE
+ALORS
+	pima = ima = malloc(w*h*sizeof(unsigned char));
+SINON
+	pima = ima = malloc(w*h_local*sizeof(unsigned char));
 ```
 
+Algo du Maitre :
+```
+SI rank == MAITRE
+ALORS
+	//allocation dynamique de l'image global
+	//test de l'allocation
+	//calcul de la position du début de l'image local du maitre pima <- rank*w*H_local>
+```
 
-Commandes : 
+Algo Envoi :
+```
+SI rank == MAITRE
+ALORS pour tous les ouvriers
+	//attente d'un message
+	MPI_Probe();
+	s = status
+	SI s == MAITRE
+	ALORS
+		//assemblage des bloc
+		MPI_Recv()
+	FIN SI
+SINON
+	MPI_Send()
+FIN SI
+```
+
+
+Commandes de compilation avec MPI et lancement de l'exécutable :
 ```sh
 mpicc -o mandel_paral mandel_paral.c -lm
 mpirun -np 4 ./mandel_paral
@@ -97,40 +157,26 @@ mpirun -np 16 ./mandel_paral
 Temps total de calcul : 1.84954 sec
 ```
 
-Copier un fichier sur un raspberry:
-```sh
-scp -r -p source user@serveur:/home/pi/destination
-```
-
-
-Connexion des Raspberry entre eux 
-
-https://www.raspberrypi.org/documentation/remote-access/ssh/passwordless.md
-http://raspberrypi.stackexchange.com/questions/1686/how-do-i-set-up-ssh-keys-to-log-into-my-rpi
-
-ssh-keygen -t dsa
-ssh-copy-id -i ~/.ssh/id_dsa.pub pi@piensg005
-
 
 Sur raspberry :
 
 ```sh
-Domaine: {[-2,-2]x[2,2]}
-Increment : 0.00500626 0.00500626
-Prof: 10000
-Dim image: 800x800
-```
+mpiexec -np 1 ./mandel_paral
 
-```sh
+Temps total de calcul : 18.8605 sec
+
+mpiexec -np 2 ./mandel_paral
+
+Temps total de calcul : 9.48552 sec
+Temps total de calcul : 9.48569 sec
+
 mpiexec -np 4 ./mandel_paral
 
 Temps total de calcul : 0.0415709 sec
 Temps total de calcul : 9.45125 sec
 Temps total de calcul : 9.56446 sec
 Temps total de calcul : 9.5655 sec
-```
 
-```sh
 mpiexec -np 8 ./mandel_paral
 
 Temps total de calcul : 0.270028 sec
@@ -141,16 +187,7 @@ Temps total de calcul : 3.31648 sec
 Temps total de calcul : 14.7327 sec
 Temps total de calcul : 15.4475 sec
 Temps total de calcul : 15.4195 sec
-```
 
-```sh
-mpiexec -np 2 ./mandel_paral
-
-Temps total de calcul : 9.48552 sec
-Temps total de calcul : 9.48569 sec
-```
-
-```sh
 mpiexec -np 16 ./mandel_paral
 
 Temps total de calcul : 0.380733 sec
@@ -169,60 +206,51 @@ Temps total de calcul : 12.529 sec
 Temps total de calcul : 19.0554 sec
 Temps total de calcul : 19.2067 sec
 Temps total de calcul : 19.2355 sec
-```
 
-```sh
-mpiexec -np 1 ./mandel_paral
-
-Temps total de calcul : 18.8605 sec
-``` 
-
-```sh
 mpiexec -np 32 ./mandel_paral
-Temps total de calcul : 19.8775 sec
 
+Temps total de calcul : 19.8775 sec
+```
 
 Sans les printf: Temps équivalent
-```
 
-Contraintes : 
-Travail à plusieurs sur les raspberry
-moins puissant qu'un ordi
 
-En mode débug: 
-```sh
-mpirun -np 4 xterm -e gdb ./mandel_dyn
-```
+Contraintes :  
+Travail à plusieurs sur les raspberry  
+moins puissant qu'un ordi  
 
-##### Architecture des processeurs à répartition dynamique des charges : ##### 
 
-Pas la même charge de travaille : la partie centrale travaille plus.
-MAITRE ne travaille pas et à le role du chef, envoie le travail aux esclaves.
-Le processus MAITRE devrait recevoir les lignes traitées par les ouvriers et sibesoin de leur envoyer de nouveau d'autres lignes à traiter.
-Le nombre de blocs est un argument du programme, caractérisé par le nombre de lignes à traiter.
+##### Architecture des processeurs à répartition dynamique des charges : #####
+
+Pas la même charge de travaille : la partie centrale travaille plus.  
+MAITRE ne travaille pas et à le role du chef, envoie le travail aux esclaves.  
+Le processus MAITRE devrait recevoir les lignes traitées par les ouvriers et sibesoin de leur envoyer de nouveau d'autres lignes à traiter.  
+Le nombre de blocs est un argument du programme, caractérisé par le nombre de lignes à traiter.  
 A chaque fois qu'un ouvrier finit une portion de calcul à traîter, il l'envoie au MAITRE qui devrait le mettre au bon endroit.
 
 Algo Maitre
-
+```
 - allocation dynamique de l'image globale
 - test de l'allocation dynamique
-Pour i de 0 à nb_proc faire
-Si i != MAITRE
+POUR i de 0 à nb_proc faire
+SI i != MAITRE
 - on envoie au esclave de rang i num_bloc
--on incrémente num_bloc
+- on incrémente num_bloc
 
-Pour i de 0 à h/nb_lignes 
+POUR i de 0 à h/nb_lignes
 - on recoit le numéro du bloc fait par l'ouvrier
 - on détermine le rang de l'émetteur
 - on recoit le calcul
 - test de fin de l'image
 	- s'il reste de calcul à faire ou encore un numéro de bloc à calculer au ouvrier (qui a envoyé le calcul)
 	- sinon on envoie un message en indiquant la fin du travail
+```
 
+Résultats :
+```sh
 2
 Rang 0 | Temps total de calcul : 18.8841 sec
 Rang 1 | Temps total de calcul : 18.8841 sec
-
 
 4
 Rang 1 | Temps total de calcul : 6.33867 sec
@@ -239,7 +267,6 @@ Rang 6 | Temps total de calcul : 5.61745 sec
 Rang 7 | Temps total de calcul : 5.62684 sec
 Rang 0 | Temps total de calcul : 5.69873 sec
 Rang 1 | Temps total de calcul : 5.69873 sec
-
 
 16
 Rang 8 | Temps total de calcul : 5.33621 sec
@@ -292,9 +319,25 @@ Rang 9 | Temps total de calcul : 7.59892 sec
 Rang 0 | Temps total de calcul : 7.7279 sec
 Rang 8 | Temps total de calcul : 7.74399 sec
 Rang 7 | Temps total de calcul : 7.76593 sec
+```
 
+## Utiles ##
 
+#### Copier un fichier sur un raspberry: ####
+```sh
+scp -r -p source user@serveur:/home/pi/destination
+```
 
+#### Connexion des Raspberry entre eux ####
 
- 
+https://www.raspberrypi.org/documentation/remote-access/ssh/passwordless.md
+http://raspberrypi.stackexchange.com/questions/1686/how-do-i-set-up-ssh-keys-to-log-into-my-rpi
+```sh
+ssh-keygen -t dsa
+ssh-copy-id -i ~/.ssh/id_dsa.pub pi@piensg005
+```
 
+En mode débug:
+```sh
+mpirun -np 4 xterm -e gdb ./mandel_dyn
+```
