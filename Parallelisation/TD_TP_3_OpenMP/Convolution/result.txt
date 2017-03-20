@@ -1,0 +1,13 @@
+convol
+1
+Temps total de calcul : 2.48517 seconde(s) 
+2
+Temps total de calcul : 1.24717 seconde(s) 
+4
+Temps total de calcul : 1.89951 seconde(s) 
+8
+Temps total de calcul : 1.797 seconde(s) 
+16
+Temps total de calcul : 0.973006 seconde(s) 
+32
+Temps total de calcul : 0.986941 seconde(s) 

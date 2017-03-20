@@ -1,0 +1,33 @@
+convol
+0 10
+Temps total de calcul : 256.265 seconde(s) 
+0 100
+Temps total de calcul : 2318.18 seconde(s) 
+0 1000
+Temps total de calcul : 11987.1 seconde(s) 
+0 10000
+Trop long
+
+
+convol
+1 10
+Temps total de calcul : 93.8177 seconde(s) 
+1 100
+Temps total de calcul : 942.112 seconde(s) 
+1 1000
+Temps total de calcul : 9368.85 seconde(s) 
+2 10
+Temps total de calcul : 64.7061 seconde(s) 
+2 100
+Temps total de calcul : 648.001 seconde(s) 
+2 1000
+Trop long
+
+convol
+3 10
+Temps total de calcul : 63.4847 seconde(s) 
+3 100
+Temps total de calcul : 641.176 seconde(s) 
+4 10
+Temps total de calcul : 555.818 seconde(s) 
+4 100
