@@ -157,7 +157,6 @@ mpirun -np 16 ./mandel_paral
 Temps total de calcul : 1.84954 sec
 ```
 
-
 Sur raspberry :
 
 ```sh
