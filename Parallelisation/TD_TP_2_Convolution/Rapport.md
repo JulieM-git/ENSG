@@ -76,7 +76,7 @@ Les lignes de début et fin de bloc ne sont pas traitées. Il faut faire communi
 
 ### Question 6 : Equilibrage de charge statique ###
 
-- Résultats sur ordinateur : [Voir les resultats](Tests_paral_femme_ordi.txt)
+- Résultats sur ordinateur : [Voir les resultats](./Tests_paral_femme_ordi.txt)
 
 | np | temps (sec) |
 | :---: | ----: |
@@ -86,10 +86,10 @@ Les lignes de début et fin de bloc ne sont pas traitées. Il faut faire communi
 | 16 | 3.16798 |
 | 32 | 5.03995 |
 
-![](Diagrammes/paral_ordi.PNG)
+![](./Diagrammes/paral_ordi.PNG)
 
 
-- Résultat sur raspberry : [Voir les resultats](Tests_paral_femme_raspberry.txt)
+- Résultat sur raspberry : [Voir les resultats](./Tests_paral_femme_raspberry.txt)
 
 | np | temps (sec) |
 | :---: | ----: |
@@ -99,10 +99,10 @@ Les lignes de début et fin de bloc ne sont pas traitées. Il faut faire communi
 | 16 | 5.15975 |
 | 32 | 10 |
 
-![](Diagrammes/paral_raspberry.PNG)
+![](./Diagrammes/paral_raspberry.PNG)
 
 
-- Résultat sur ordinateur : [Voir les resultats](result.txt)
+- Résultat sur ordinateur : [Voir les resultats](./result.txt)
 
 Convolution simple avec Sukhothai_4080x6132 :
 
@@ -200,7 +200,7 @@ Convolution parallèle avec Sukhothai_4080x6132 :
 
 
 
-- Résultat sur raspberry : [Voir les resultats](Raspberry/result.txt)
+- Résultat sur raspberry : [Voir les resultats](./Raspberry/result.txt)
 
 Convolution simple avec Sukhothai_4080x6132 :
 
