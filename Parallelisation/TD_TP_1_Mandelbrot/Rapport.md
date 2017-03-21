@@ -28,14 +28,14 @@ Compilation et exécution :
 ```sh
 gcc -o Mandel mandel.c -lm; ./Mandel
 ```
-![Mandel](./Images/mandel.PNG)
+![Mandel](./Images/mandel.png)
 
 Exécution avec des paramètres :
 ```sh
 ./Mandel h w xmin ymin xmax ymax profondeur
 ```
 
-![Mandel](./Images/mandel0-0-1-0.5-200.PNG)
+![Mandel](./Images/mandel0-0-1-0.5-200.png)
 
 Test des paramètres :
 
@@ -98,7 +98,7 @@ Le calcul aux différentes profondeurs (fonction xy2color) n'est pas parallélis
 
 Nous allons découper le tableau en fonction du nombre de processeur. Il faut s'intérresser à quel rang va commencer le traitement ainsi que la taille.
 
-![bloc](./Diagrammes/Bloc.PNG)
+![bloc](./Diagrammes/Bloc.png)
 
 ##### Architecture des processeurs à mémoire distribuée : #####
 ```
