@@ -28,14 +28,14 @@ Compilation et exécution :
 ```sh
 gcc -o Mandel mandel.c -lm; ./Mandel
 ```
-![Mandel](./Images/mandel.png)
+![Mandel par défaut](./Images/mandel.png)
 
 Exécution avec des paramètres :
 ```sh
 ./Mandel h w xmin ymin xmax ymax profondeur
 ```
 
-![Mandel](./Images/mandel0-0-1-0.5-200.png)
+![Mandel avec paramètres](./Images/mandel0-0-1-0.5-200.png)
 
 Test des paramètres :
 
@@ -69,7 +69,7 @@ Les résultats suivant sont répertoriés dans le [fichier](./Tests_params) et l
 | 8000 | 8000 | -2 | -2 | 2 | 2 | 200 | 13.361 |
 | 10000 | 10000 | -2 | -2 | 2 | 2 | 200 | 20.8596 |
 
-![taille](./Diagrammes/taille_temps.PNG)  
+![Variation de la taille](./Diagrammes/taille_temps.PNG)  
 *Conclusion* : Plus la taille est grande, plus le temps est long.
 
  - Avec variation de la profondeur :
@@ -82,7 +82,7 @@ Les résultats suivant sont répertoriés dans le [fichier](./Tests_params) et l
 | 800 | 800 | -2 | -2 | 2 | 2 | 20000 | 10.5759 |
 | 800 | 800 | -2 | -2 | 2 | 2 | 200000 | 108.304 |
 
-![profondeur](./Diagrammes/profondeur_temps.PNG)  
+![Variation de la profondeur](./Diagrammes/profondeur_temps.PNG)  
 *Conclusion* : Plus la profondeur est grande, plus le temps est long de manière quasi-linéaire.
 
 Autre exemple :
@@ -98,7 +98,7 @@ Le calcul aux différentes profondeurs (fonction xy2color) n'est pas parallélis
 
 Nous allons découper le tableau en fonction du nombre de processeur. Il faut s'intérresser à quel rang va commencer le traitement ainsi que la taille.
 
-![bloc](./Diagrammes/Bloc.png)
+![Bloc](./Diagrammes/Bloc.png)
 
 ##### Architecture des processeurs à mémoire distribuée : #####
 ```
@@ -176,7 +176,7 @@ Temps total de calcul : 1.38156 sec
 mpirun -np 16 ./mandel_paral
 Temps total de calcul : 1.84954 sec
 ```
-![ordi](./Diagrammes/np_ordi.PNG)
+![Résultat sur ordi](./Diagrammes/np_ordi.PNG)
 
 
 - Résultats sur raspberry :
@@ -187,7 +187,7 @@ mpicc -o mandel_paral mandel_paral.c -lm
 mpiexec -np 4 ./mandel_paral
 ```
 
-![raspberry](./Diagrammes/np_raspberry.PNG)
+![Résultat sur raspberry](./Diagrammes/np_raspberry.PNG)
 
 Sans les printf: Temps équivalent
 
@@ -235,7 +235,7 @@ Les temps maximum sont :
 | 16 | 5.90874 |
 | 32 | 7.76593 |
 
-![](./Diagrammes/np_temps_dyn.PNG)
+![Résultat sur ordi](./Diagrammes/np_temps_dyn.PNG)
 
 
 ## Utiles ##

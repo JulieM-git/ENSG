@@ -38,7 +38,8 @@ Avec OpenMP (choix : static, dynamic, runtime):
 | 16     | 2.22261 |
 | 32     | 2.53986 |
 
-![](./Diagrammes/mand.PNG)
+![Mandelbrot](./Diagrammes/mand.PNG)
+
 
 ### Question 4 ###
 
@@ -53,7 +54,7 @@ Test avec Convolution :
 | 16     | 0.973006 |
 | 32     | 0.986941 |
 
-![](./Diagrammes/conv.PNG)
+![Convolution](./Diagrammes/conv.PNG)
 
 Conclusion : plus il y a de threads, plus le temps de calcul est court.
 

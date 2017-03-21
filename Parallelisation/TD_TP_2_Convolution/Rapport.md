@@ -86,7 +86,7 @@ Les lignes de début et fin de bloc ne sont pas traitées. Il faut faire communi
 | 16 | 3.16798 |
 | 32 | 5.03995 |
 
-![](./Diagrammes/paral_ordi.PNG)
+![Parallele sur Ordi](./Diagrammes/paral_ordi.PNG)
 
 
 - Résultat sur raspberry : [Voir les resultats](./Tests_paral_femme_raspberry.txt)
@@ -99,7 +99,7 @@ Les lignes de début et fin de bloc ne sont pas traitées. Il faut faire communi
 | 16 | 5.15975 |
 | 32 | 10 |
 
-![](./Diagrammes/paral_raspberry.PNG)
+![Parallele sur Raspberry](./Diagrammes/paral_raspberry.PNG)
 
 
 - Résultat sur ordinateur : [Voir les resultats](./result.txt)
