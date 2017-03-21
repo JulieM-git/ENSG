@@ -1,0 +1,49 @@
+mpiexec -np 1 ./mandel_paral
+
+Temps total de calcul : 18.8605 sec
+
+mpiexec -np 2 ./mandel_paral
+
+Temps total de calcul : 9.48552 sec
+Temps total de calcul : 9.48569 sec
+
+mpiexec -np 4 ./mandel_paral
+
+Temps total de calcul : 0.0415709 sec
+Temps total de calcul : 9.45125 sec
+Temps total de calcul : 9.56446 sec
+Temps total de calcul : 9.5655 sec
+
+mpiexec -np 8 ./mandel_paral
+
+Temps total de calcul : 0.270028 sec
+Temps total de calcul : 0.253835 sec
+Temps total de calcul : 0.289698 sec
+Temps total de calcul : 3.14804 sec
+Temps total de calcul : 3.31648 sec
+Temps total de calcul : 14.7327 sec
+Temps total de calcul : 15.4475 sec
+Temps total de calcul : 15.4195 sec
+
+mpiexec -np 16 ./mandel_paral
+
+Temps total de calcul : 0.380733 sec
+Temps total de calcul : 0.378004 sec
+Temps total de calcul : 0.376818 sec
+Temps total de calcul : 0.434868 sec
+Temps total de calcul : 0.443689 sec
+Temps total de calcul : 0.422737 sec
+Temps total de calcul : 0.472882 sec
+Temps total de calcul : 0.868729 sec
+Temps total de calcul : 1.15343 sec
+Temps total de calcul : 5.56303 sec
+Temps total de calcul : 5.87968 sec
+Temps total de calcul : 12.4698 sec
+Temps total de calcul : 12.529 sec
+Temps total de calcul : 19.0554 sec
+Temps total de calcul : 19.2067 sec
+Temps total de calcul : 19.2355 sec
+
+mpiexec -np 32 ./mandel_paral
+
+Temps total de calcul : 19.8775 sec

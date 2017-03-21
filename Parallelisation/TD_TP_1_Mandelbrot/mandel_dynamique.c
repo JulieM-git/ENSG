@@ -1,3 +1,9 @@
+/*
+Calcul de l'ensemble de Mandelbrot
+
+Modifié par Hugo Baltz
+ */
+
 #define MAITRE 0 // Définition rank = 0 => master
 #define TAG_IM 42
 #define TAG_NUM_BLOC 24
@@ -53,24 +59,24 @@ double my_gettimeofday(){
  */
 
 int swap(int i) {
-  int init = i; 
+  int init = i;
   int conv;
   unsigned char *o, *d;
-	  
-  o = ( (unsigned char *) &init) + 3; 
+
+  o = ( (unsigned char *) &init) + 3;
   d = (unsigned char *) &conv;
-  
+
   *d++ = *o--;
   *d++ = *o--;
   *d++ = *o--;
   *d++ = *o--;
-  
+
   return conv;
 }
 
 
-/*** 
- * Par Francois-Xavier MOREL (M2 SAR, oct2009): 
+/***
+ * Par Francois-Xavier MOREL (M2 SAR, oct2009):
  */
 
 unsigned char power_composante(int i, int p) {
@@ -90,17 +96,17 @@ unsigned char cos_composante(int i, double freq) {
   iD=cos(iD/255.0*2*M_PI*freq);
   iD+=1;
   iD*=128;
-  
+
   o=(unsigned char) iD;
   return o;
 }
 
-/*** 
+/***
  * Choix du coloriage : definir une (et une seule) des constantes
- * ci-dessous :  
+ * ci-dessous :
  */
 //#define ORIGINAL_COLOR
-#define COS_COLOR 
+#define COS_COLOR
 
 #ifdef ORIGINAL_COLOR
 #define COMPOSANTE_ROUGE(i)    ((i)/2)
@@ -135,7 +141,7 @@ void sauver_rasterfile( char *nom, int largeur, int hauteur, unsigned char *p) {
   	exit(1);
   }
 
-  file.ras_magic  = swap(RAS_MAGIC);	
+  file.ras_magic  = swap(RAS_MAGIC);
   file.ras_width  = swap(largeur);	  /* largeur en pixels de l'image */
   file.ras_height = swap(hauteur);         /* hauteur en pixels de l'image */
   file.ras_depth  = swap(8);	          /* profondeur de chaque pixel (1, 8 ou 24 )   */
@@ -144,8 +150,8 @@ void sauver_rasterfile( char *nom, int largeur, int hauteur, unsigned char *p) {
   file.ras_maptype = swap(RMT_EQUAL_RGB);
   file.ras_maplength = swap(256*3);
 
-  fwrite(&file, sizeof(struct rasterfile), 1, fd); 
-  
+  fwrite(&file, sizeof(struct rasterfile), 1, fd);
+
   /* Palette de couleurs : composante rouge */
   i = 256;
   while( i--) {
@@ -167,12 +173,12 @@ void sauver_rasterfile( char *nom, int largeur, int hauteur, unsigned char *p) {
     fwrite( &o, sizeof(unsigned char), 1, fd);
   }
 
-  // pour verifier l'ordre des lignes dans l'image : 
+  // pour verifier l'ordre des lignes dans l'image :
   //fwrite( p, largeur*hauteur/3, sizeof(unsigned char), fd);
-  
+
   // pour voir la couleur du '0' :
   // memset (p, 0, largeur*hauteur);
-  
+
   fwrite( p, largeur*hauteur, sizeof(unsigned char), fd);
   fclose( fd);
 }
@@ -189,8 +195,8 @@ void sauver_rasterfile( char *nom, int largeur, int hauteur, unsigned char *p) {
  * \end{array}\right.
  * \f]
  * le nombre d'itérations que la suite met pour diverger est le
- * nombre \f$ n \f$ pour lequel \f$ |z_n| > 2 \f$. 
- * Ce nombre est ramené à une valeur entre 0 et 255 correspond ainsi a 
+ * nombre \f$ n \f$ pour lequel \f$ |z_n| > 2 \f$.
+ * Ce nombre est ramené à une valeur entre 0 et 255 correspond ainsi a
  * une couleur dans la palette des couleurs.
  */
 
@@ -209,10 +215,10 @@ unsigned char xy2color(double a, double b, int prof) {
     y = 2*temp*y + b;
     if( x2 + y2 >= 4.0) break;
   }
-  return (i==prof)?255:(int)((i%255)); 
+  return (i==prof)?255:(int)((i%255));
 }
 
-/* 
+/*
  * Partie principale: en chaque point de la grille, appliquer xy2color
  */
 
@@ -242,14 +248,14 @@ int main(int argc, char *argv[]) {
   debut = my_gettimeofday();
 
   if( argc == 1) fprintf( stderr, "%s\n", info);
-  
+
   /* Valeurs par defaut de la fractale */
   xmin = -2; ymin = -2;
   xmax =  2; ymax =  2;
   w = h = 800;
   prof = 10000;
   nlin = 8;
-  
+
   /* Recuperation des parametres */
   if( argc > 1) w    = atoi(argv[1]);
   if( argc > 2) h    = atoi(argv[2]);
@@ -277,7 +283,7 @@ int main(int argc, char *argv[]) {
   int nBloc = h / nlin; // Nombre de blocs
   int num_bloc = 0; // Numero bloc
   int num_bloc_rec = 0; // Numero bloc recu
-  int nBloc_recu = 0; // nombre bloc recu 
+  int nBloc_recu = 0; // nombre bloc recu
 
   int stop = -1;
 
@@ -293,7 +299,7 @@ int main(int argc, char *argv[]) {
     fprintf( stderr, "Dim image: %dx%d\n", w, h);
     fprintf( stderr, "Nombre lignes par bloc: %d\n", nlin);
 
-    /* Allocation memoire du tableau resultat */  
+    /* Allocation memoire du tableau resultat */
     pima = ima = (unsigned char *)malloc( w*h*sizeof(unsigned char));
     if( ima == NULL) {
       fprintf( stderr, "Erreur allocation mémoire du tableau \n");
@@ -308,21 +314,21 @@ int main(int argc, char *argv[]) {
       }
     }
 
-    
+
     while(finCalc == 0){
       /* Reception donnees ouvrier */
 
       // On determine le rang de l'émetteur
       MPI_Probe(MPI_ANY_SOURCE, TAG_NUM_BLOC, MPI_COMM_WORLD, &status);
       int rank_src = status.MPI_SOURCE; // rank de la source
-      
+
       if (rank_src != MAITRE) {
         // On reçoit le numéro de bloc traite par l'ouvrier
         MPI_Recv(&num_bloc_rec, 1, MPI_INT, rank_src, TAG_NUM_BLOC,MPI_COMM_WORLD, &status);
 
         // On reçoit le bloc traité
         MPI_Recv(ima + num_bloc_rec*nlin*w*sizeof(unsigned char), nlin*w, MPI_CHAR, rank_src, TAG_IM, MPI_COMM_WORLD, &status);
-        
+
         nBloc_recu ++;
 
         // Test fin de calcul de l'image
@@ -353,7 +359,7 @@ int main(int argc, char *argv[]) {
     /* Affichage parametres pour verificatrion */
     fprintf( stderr, "Rang: %d\n", rank);
 
-    /* Allocation memoire locale */  
+    /* Allocation memoire locale */
     ima_loc = (unsigned char *)malloc( w*nlin*sizeof(unsigned char));
     if( ima_loc == NULL) {
       fprintf( stderr, "Erreur allocation mémoire du tableau \n");
@@ -370,16 +376,16 @@ int main(int argc, char *argv[]) {
         pima_loc = ima_loc;
 
         /* Traitement d'un bloc point par point */
-        y = ymin + nlin*num_bloc*yinc; 
-        for (i = 0; i < nlin; i++) { 
+        y = ymin + nlin*num_bloc*yinc;
+        for (i = 0; i < nlin; i++) {
           x = xmin;
           for (j = 0; j < w; j++) {
             // printf("%d\n", xy2color( x, y, prof));
             // printf("(x,y)=(%g;%g)\t (i,j)=(%d,%d)\n", x, y, i, j);
-            *pima_loc++ = xy2color( x, y, prof); 
+            *pima_loc++ = xy2color( x, y, prof);
             x += xinc;
           }
-          y += yinc; 
+          y += yinc;
         }
 
         // Envoie au master du numéro de bloc
@@ -387,7 +393,7 @@ int main(int argc, char *argv[]) {
 
         // Envoie au master du bloc
         MPI_Send(ima_loc, nlin * w, MPI_CHAR, MAITRE, TAG_IM, MPI_COMM_WORLD);
-        
+
       }
     }
 
