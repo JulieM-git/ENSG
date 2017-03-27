@@ -10,21 +10,36 @@ Il y a une allocation de la mémoire de : H*W*Tpixel
 On calcule pixel par pixel, qui est codé sur 8 bits car c'est un unsigned char (1 octet). On est en noir et blanc;
 Le calcul s'effectue dan sle plan complexe, on associe une coordonnée (x,y) à chaque pixel.
 
+D'après les dimensions, on calcule le pas d'incrémentation pour calculer les bonnes valeurs des x(i) et y(j).
+On a :
+```
+x(i) = xmin + xinc * i
+y(j) = ymin + yinc * j
+```
+Où :
+```
+xinc = (xmax - xmin) / (w - 1)
+yinc = (ymax - ymin) / (h - 1)
+```
+
 ### Question 2 ###
 
 Compilation et exécution :
 ```sh
 gcc -o Mandel mandel.c -lm; ./Mandel
 ```
+![Mandel par défaut](./Images/mandel.png)
 
 Exécution avec des paramètres :
 ```sh
 ./Mandel h w xmin ymin xmax ymax profondeur
 ```
 
+![Mandel avec paramètres](./Images/mandel0-0-1-0.5-200.png)
+
 Test des paramètres :
 
-Les résultats suivant sont répertoriés dans le [fichier](./Tests) et les [images](./Images) résultantes pour la visualisation.
+Les résultats suivant sont répertoriés dans le [fichier](./Tests_params) et les [images](./Images) résultantes pour la visualisation.
 
 - Avec les valeurs de base :
 
@@ -42,7 +57,7 @@ Les résultats suivant sont répertoriés dans le [fichier](./Tests) et les [ima
 | 800 | 800 | -0.5 | 0 | 0.5 | 0.5 | 200 | 0.990163 |
 | 800 | 800 | 0 | -0.5 | 0.5 | 0.5 | 200 | 0.863601 |
 
-*Conclusion* :
+*Conclusion* : Lorsque ymax augmente, l'image se tasse vers le haut, lorsque xmax augmente, l'image se tasse vers la gauche, vice-versa. La zone de calcul n'est pas la même.
 
 - Avec variation de la taille :   
 
@@ -54,7 +69,7 @@ Les résultats suivant sont répertoriés dans le [fichier](./Tests) et les [ima
 | 8000 | 8000 | -2 | -2 | 2 | 2 | 200 | 13.361 |
 | 10000 | 10000 | -2 | -2 | 2 | 2 | 200 | 20.8596 |
 
-![taille](./Diagrammes/taille_temps.PNG)  
+![Variation de la taille](./Diagrammes/taille_temps.PNG)  
 *Conclusion* : Plus la taille est grande, plus le temps est long.
 
  - Avec variation de la profondeur :
@@ -67,7 +82,7 @@ Les résultats suivant sont répertoriés dans le [fichier](./Tests) et les [ima
 | 800 | 800 | -2 | -2 | 2 | 2 | 20000 | 10.5759 |
 | 800 | 800 | -2 | -2 | 2 | 2 | 200000 | 108.304 |
 
-![profondeur](./Diagrammes/profondeur_temps.PNG)  
+![Variation de la profondeur](./Diagrammes/profondeur_temps.PNG)  
 *Conclusion* : Plus la profondeur est grande, plus le temps est long de manière quasi-linéaire.
 
 Autre exemple :
@@ -83,6 +98,8 @@ Le calcul aux différentes profondeurs (fonction xy2color) n'est pas parallélis
 
 Nous allons découper le tableau en fonction du nombre de processeur. Il faut s'intérresser à quel rang va commencer le traitement ainsi que la taille.
 
+![Bloc](./Diagrammes/Bloc.png)
+
 ##### Architecture des processeurs à mémoire distribuée : #####
 ```
 Données :   
@@ -91,7 +108,8 @@ W : largeur tableau
 rank : rang du processus  
 H_local : hauteur d'un bloc
 ```
-Test du début :
+
+Test du début sur le nombre de processus :
 ```
 P : nombre de processus  
 SI H[P] différent de 0
@@ -140,7 +158,7 @@ SINON
 FIN SI
 ```
 
-- Sur ordinateur :
+- Résultats sur ordinateur :
 
 Commandes de compilation avec MPI et lancement de l'exécutable :
 ```sh
@@ -158,10 +176,10 @@ Temps total de calcul : 1.38156 sec
 mpirun -np 16 ./mandel_paral
 Temps total de calcul : 1.84954 sec
 ```
-![ordi](./Diagrammes/np_ordi.PNG)
+![Résultat sur ordi](./Diagrammes/np_ordi.PNG)
 
 
-- Sur raspberry :
+- Résultats sur raspberry :
 
 Commandes de compilation avec MPI et lancement de l'exécutable :
 ```sh
@@ -169,58 +187,7 @@ mpicc -o mandel_paral mandel_paral.c -lm
 mpiexec -np 4 ./mandel_paral
 ```
 
-```sh
-mpiexec -np 1 ./mandel_paral
-
-Temps total de calcul : 18.8605 sec
-
-mpiexec -np 2 ./mandel_paral
-
-Temps total de calcul : 9.48552 sec
-Temps total de calcul : 9.48569 sec
-
-mpiexec -np 4 ./mandel_paral
-
-Temps total de calcul : 0.0415709 sec
-Temps total de calcul : 9.45125 sec
-Temps total de calcul : 9.56446 sec
-Temps total de calcul : 9.5655 sec
-
-mpiexec -np 8 ./mandel_paral
-
-Temps total de calcul : 0.270028 sec
-Temps total de calcul : 0.253835 sec
-Temps total de calcul : 0.289698 sec
-Temps total de calcul : 3.14804 sec
-Temps total de calcul : 3.31648 sec
-Temps total de calcul : 14.7327 sec
-Temps total de calcul : 15.4475 sec
-Temps total de calcul : 15.4195 sec
-
-mpiexec -np 16 ./mandel_paral
-
-Temps total de calcul : 0.380733 sec
-Temps total de calcul : 0.378004 sec
-Temps total de calcul : 0.376818 sec
-Temps total de calcul : 0.434868 sec
-Temps total de calcul : 0.443689 sec
-Temps total de calcul : 0.422737 sec
-Temps total de calcul : 0.472882 sec
-Temps total de calcul : 0.868729 sec
-Temps total de calcul : 1.15343 sec
-Temps total de calcul : 5.56303 sec
-Temps total de calcul : 5.87968 sec
-Temps total de calcul : 12.4698 sec
-Temps total de calcul : 12.529 sec
-Temps total de calcul : 19.0554 sec
-Temps total de calcul : 19.2067 sec
-Temps total de calcul : 19.2355 sec
-
-mpiexec -np 32 ./mandel_paral
-
-Temps total de calcul : 19.8775 sec
-```
-![raspberry](./Diagrammes/np_raspberry.PNG)
+![Résultat sur raspberry](./Diagrammes/np_raspberry.PNG)
 
 Sans les printf: Temps équivalent
 
@@ -256,80 +223,20 @@ POUR i de 0 à h/nb_lignes
 	- sinon on envoie un message en indiquant la fin du travail
 ```
 
-Résultats :
-```sh
-2
-Rang 0 | Temps total de calcul : 18.8841 sec
-Rang 1 | Temps total de calcul : 18.8841 sec
+Les résultats suivant sont répertoriés dans le [fichier](./Tests_dyn).
 
-4
-Rang 1 | Temps total de calcul : 6.33867 sec
-Rang 3 | Temps total de calcul : 6.33677 sec
-Rang 0 | Temps total de calcul : 6.36012 sec
-Rang 2 | Temps total de calcul : 6.36196 sec
+Les temps maximum sont :
 
-8
-Rang 4 | Temps total de calcul : 5.61404 sec
-Rang 2 | Temps total de calcul : 5.63944 sec
-Rang 5 | Temps total de calcul : 5.62283 sec
-Rang 3 | Temps total de calcul : 5.6264 sec
-Rang 6 | Temps total de calcul : 5.61745 sec
-Rang 7 | Temps total de calcul : 5.62684 sec
-Rang 0 | Temps total de calcul : 5.69873 sec
-Rang 1 | Temps total de calcul : 5.69873 sec
+| np | temps (sec) |
+| :---: | ----: |
+| 2 | 18.8841 |
+| 4 | 6.36196 |
+| 8 | 5.69873 |
+| 16 | 5.90874 |
+| 32 | 7.76593 |
 
-16
-Rang 8 | Temps total de calcul : 5.33621 sec
-Rang 14 | Temps total de calcul : 5.28943 sec
-Rang 7 | Temps total de calcul : 5.38163 sec
-Rang 9 | Temps total de calcul : 5.36378 sec
-Rang 6 | Temps total de calcul : 5.43166 sec
-Rang 5 | Temps total de calcul : 5.44604 sec
-Rang 1 | Temps total de calcul : 5.55885 sec
-Rang 15 | Temps total de calcul : 5.52849 sec
-Rang 2 | Temps total de calcul : 5.61659 sec
-Rang 12 | Temps total de calcul : 5.60953 sec
-Rang 13 | Temps total de calcul : 5.60347 sec
-Rang 3 | Temps total de calcul : 5.66156 sec
-Rang 11 | Temps total de calcul : 5.64777 sec
-Rang 10 | Temps total de calcul : 5.76604 sec
-Rang 0 | Temps total de calcul : 5.95502 sec
-Rang 4 | Temps total de calcul : 5.90874 sec
+![Résultat sur ordi](./Diagrammes/np_temps_dyn.PNG)
 
-32
-Rang 21 | Temps total de calcul : 4.87835 sec
-Rang 14 | Temps total de calcul : 4.96605 sec
-Rang 23 | Temps total de calcul : 4.94374 sec
-Rang 20 | Temps total de calcul : 4.96719 sec
-Rang 31 | Temps total de calcul : 4.92732 sec
-Rang 18 | Temps total de calcul : 4.99209 sec
-Rang 30 | Temps total de calcul : 4.94877 sec
-Rang 15 | Temps total de calcul : 5.01801 sec
-Rang 29 | Temps total de calcul : 4.97739 sec
-Rang 2 | Temps total de calcul : 5.12677 sec
-Rang 19 | Temps total de calcul : 5.10957 sec
-Rang 17 | Temps total de calcul : 5.19229 sec
-Rang 22 | Temps total de calcul : 5.23714 sec
-Rang 27 | Temps total de calcul : 5.22666 sec
-Rang 11 | Temps total de calcul : 5.28394 sec
-Rang 24 | Temps total de calcul : 5.31219 sec
-Rang 25 | Temps total de calcul : 5.36653 sec
-Rang 26 | Temps total de calcul : 5.68716 sec
-Rang 28 | Temps total de calcul : 5.66304 sec
-Rang 16 | Temps total de calcul : 6.6346 sec
-Rang 1 | Temps total de calcul : 6.69792 sec
-Rang 3 | Temps total de calcul : 6.90212 sec
-Rang 13 | Temps total de calcul : 6.88613 sec
-Rang 12 | Temps total de calcul : 7.1387 sec
-Rang 4 | Temps total de calcul : 7.22854 sec
-Rang 10 | Temps total de calcul : 7.29178 sec
-Rang 5 | Temps total de calcul : 7.31189 sec
-Rang 6 | Temps total de calcul : 7.49401 sec
-Rang 9 | Temps total de calcul : 7.59892 sec
-Rang 0 | Temps total de calcul : 7.7279 sec
-Rang 8 | Temps total de calcul : 7.74399 sec
-Rang 7 | Temps total de calcul : 7.76593 sec
-```
 
 ## Utiles ##
 

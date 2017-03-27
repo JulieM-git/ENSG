@@ -1,8 +1,7 @@
 /*
- * Programmation Parallèle - Avril 2012
- * Polytech'Paris 
- * Université Pierre et Marie Curie
- * Calcul de l'ensemble de Mandelbrot, Version séquentielle
+Calcul de l'ensemble de Mandelbrot
+
+Modifié par Julie Marcuzzi
  */
 
 #include <stdlib.h>
@@ -52,24 +51,24 @@ double my_gettimeofday(){
  */
 
 int swap(int i) {
-  int init = i; 
+  int init = i;
   int conv;
   unsigned char *o, *d;
-	  
-  o = ( (unsigned char *) &init) + 3; 
+
+  o = ( (unsigned char *) &init) + 3;
   d = (unsigned char *) &conv;
-  
+
   *d++ = *o--;
   *d++ = *o--;
   *d++ = *o--;
   *d++ = *o--;
-  
+
   return conv;
 }
 
 
-/*** 
- * Par Francois-Xavier MOREL (M2 SAR, oct2009): 
+/***
+ * Par Francois-Xavier MOREL (M2 SAR, oct2009):
  */
 
 unsigned char power_composante(int i, int p) {
@@ -89,17 +88,17 @@ unsigned char cos_composante(int i, double freq) {
   iD=cos(iD/255.0*2*M_PI*freq);
   iD+=1;
   iD*=128;
-  
+
   o=(unsigned char) iD;
   return o;
 }
 
-/*** 
+/***
  * Choix du coloriage : definir une (et une seule) des constantes
- * ci-dessous :  
+ * ci-dessous :
  */
 //#define ORIGINAL_COLOR
-#define COS_COLOR 
+#define COS_COLOR
 
 #ifdef ORIGINAL_COLOR
 #define COMPOSANTE_ROUGE(i)    ((i)/2)
@@ -134,7 +133,7 @@ void sauver_rasterfile( char *nom, int largeur, int hauteur, unsigned char *p) {
 	exit(1);
   }
 
-  file.ras_magic  = swap(RAS_MAGIC);	
+  file.ras_magic  = swap(RAS_MAGIC);
   file.ras_width  = swap(largeur);	  /* largeur en pixels de l'image */
   file.ras_height = swap(hauteur);         /* hauteur en pixels de l'image */
   file.ras_depth  = swap(8);	          /* profondeur de chaque pixel (1, 8 ou 24 )   */
@@ -143,8 +142,8 @@ void sauver_rasterfile( char *nom, int largeur, int hauteur, unsigned char *p) {
   file.ras_maptype = swap(RMT_EQUAL_RGB);
   file.ras_maplength = swap(256*3);
 
-  fwrite(&file, sizeof(struct rasterfile), 1, fd); 
-  
+  fwrite(&file, sizeof(struct rasterfile), 1, fd);
+
   /* Palette de couleurs : composante rouge */
   i = 256;
   while( i--) {
@@ -166,12 +165,12 @@ void sauver_rasterfile( char *nom, int largeur, int hauteur, unsigned char *p) {
     fwrite( &o, sizeof(unsigned char), 1, fd);
   }
 
-  // pour verifier l'ordre des lignes dans l'image : 
+  // pour verifier l'ordre des lignes dans l'image :
   //fwrite( p, largeur*hauteur/3, sizeof(unsigned char), fd);
-  
+
   // pour voir la couleur du '0' :
   // memset (p, 0, largeur*hauteur);
-  
+
   fwrite( p, largeur*hauteur, sizeof(unsigned char), fd);
   fclose( fd);
 }
@@ -188,8 +187,8 @@ void sauver_rasterfile( char *nom, int largeur, int hauteur, unsigned char *p) {
  * \end{array}\right.
  * \f]
  * le nombre d'itérations que la suite met pour diverger est le
- * nombre \f$ n \f$ pour lequel \f$ |z_n| > 2 \f$. 
- * Ce nombre est ramené à une valeur entre 0 et 255 correspond ainsi a 
+ * nombre \f$ n \f$ pour lequel \f$ |z_n| > 2 \f$.
+ * Ce nombre est ramené à une valeur entre 0 et 255 correspond ainsi a
  * une couleur dans la palette des couleurs.
  */
 
@@ -208,10 +207,10 @@ unsigned char xy2color(double a, double b, int prof) {
     y = 2*temp*y + b;
     if( x2 + y2 >= 4.0) break;
   }
-  return (i==prof)?255:(int)((i%255)); 
+  return (i==prof)?255:(int)((i%255));
 }
 
-/* 
+/*
  * Partie principale: en chaque point de la grille, appliquer xy2color
  */
 
@@ -246,7 +245,7 @@ int main(int argc, char *argv[]) {
   int num_bloc_fait = 0;
   /* Fin de l'image */
   int fin_bloc = -1;
-  
+
   /* Parallelisme */
   int rank;
   MPI_Status status;
@@ -254,17 +253,17 @@ int main(int argc, char *argv[]) {
   MPI_Init(&argc, &argv);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &P);
-  
+
   /* Informations */
   if( argc == 1) fprintf( stderr, "%s\n", info);
-  
+
   /* Valeurs par defaut de la fractale */
   xmin = -2; ymin = -2;
   xmax =  2; ymax =  2;
   w = h = 800;
   prof = 10000;
   nb_lignes = 8;
-  
+
   /* Recuperation des parametres */
   if( argc > 1) w    = atoi(argv[1]);
   if( argc > 2) h    = atoi(argv[2]);
@@ -277,13 +276,13 @@ int main(int argc, char *argv[]) {
   /* Calcul des pas d'incrementation */
   xinc = (xmax - xmin) / (w-1);
   yinc = (ymax - ymin) / (h-1);
-  
+
   /* affichage parametres pour verificatrion */
   fprintf( stderr, "Domaine: {[%lg,%lg]x[%lg,%lg]}\n", xmin, ymin, xmax, ymax);
   fprintf( stderr, "Increment : %lg %lg\n", xinc, yinc);
   fprintf( stderr, "Prof: %d\n",  prof);
   fprintf( stderr, "Dim image: %dx%d\n", w, h);
-  
+
   if (P > 0) {
 		if (h % nb_lignes == 0) {
 			int nb_proc = h / nb_lignes;
@@ -291,20 +290,20 @@ int main(int argc, char *argv[]) {
 			/* Envoie et recepte morceau d'image */
 			if (rank == MAITRE) {
 				pima = ima = (unsigned char *)malloc( w*h*sizeof(unsigned char));
-				
+
 				if( ima == NULL) {
 					fprintf( stderr, "Erreur allocation mémoire du tableau \n");
 					MPI_Finalize();
 					return 0;
 				}
 				for (k = 0; k < P; k++) {
-					if (k != MAITRE) {	 	
-						if (num_bloc <= nb_proc) {	
+					if (k != MAITRE) {
+						if (num_bloc <= nb_proc) {
 							MPI_Send(&num_bloc, 1, MPI_INT, k, TAG_NUM_BLOC, MPI_COMM_WORLD);
 							printf("num_bloc_envoye:%d\n", num_bloc);
 							num_bloc++;
 						}
-						
+
 					}
 				}
 				int s;
@@ -315,60 +314,60 @@ int main(int argc, char *argv[]) {
 						MPI_Recv(&num_bloc_fait, 1, MPI_INT, s, TAG_NUM_BLOC, MPI_COMM_WORLD, &status);
 						MPI_Recv(ima + num_bloc_fait * w * nb_lignes * sizeof(unsigned char), w * nb_lignes, MPI_CHAR, s, 0, MPI_COMM_WORLD, &status);
 						printf("bloc fait %i \n", num_bloc_fait);
-	
+
 						MPI_Send(&num_bloc, 1, MPI_INT, s, TAG_NUM_BLOC, MPI_COMM_WORLD);
 						num_bloc++;
 						printf("Envoi bloc %i \n", num_bloc);
-					}					
+					}
 				}
 				MPI_Send(&fin_bloc , 1, MPI_INT, s, TAG_NUM_BLOC, MPI_COMM_WORLD);
 				printf("Fin \n");
 				/* fin du chronometrage */
 				fin = my_gettimeofday();
-				fprintf( stderr, "Temps total de calcul : %g sec\n", 
+				fprintf( stderr, "Temps total de calcul : %g sec\n",
 				   fin - debut);
 				fprintf( stdout, "%g\n", fin - debut);
 
 				/* Sauvegarde de la grille dans le fichier resultat "mandel.ras" */
 				sauver_rasterfile( "mandel.ras", w, h, ima);
-			} 
-			else { 			
+			}
+			else {
 				pima = ima = (unsigned char *)malloc( w*nb_lignes*sizeof(unsigned char));
 				if( ima == NULL) {
 					fprintf( stderr, "Erreur allocation mémoire du tableau \n");
 					MPI_Finalize();
 					return 0;
 				}
-				
+
 				while (num_bloc != -1) {
-					
+
 					MPI_Recv(&num_bloc, 1, MPI_INT, MAITRE, TAG_NUM_BLOC, MPI_COMM_WORLD, &status);
 					printf("Recoit bloc %i \n", num_bloc);
 					/* Traitement de la grille point par point d'un bloc */
 					y = ymin + (nb_lignes * num_bloc * yinc);
-					for (i = 0; i < nb_lignes; i++) {	
+					for (i = 0; i < nb_lignes; i++) {
 						x = xmin;
 						for (j = 0; j < w; j++) {
-							*pima++ = xy2color(x, y, prof); 
+							*pima++ = xy2color(x, y, prof);
 							printf("pima : %p i %d, j %d\n", pima, i, j);
 							x += xinc;
 						}
-						y += yinc; 
+						y += yinc;
 					}
 					printf("Traite %i \n", num_bloc);
 					MPI_Send(&num_bloc, 1, MPI_INT, MAITRE, TAG_NUM_BLOC, MPI_COMM_WORLD);
 					MPI_Send(ima, w * nb_lignes* sizeof(unsigned char), MPI_CHAR, MAITRE, 0, MPI_COMM_WORLD);
 					printf("Envoi %i \n", num_bloc);
-				} 
-			}		
-		} 
+				}
+			}
+		}
 		else {
 			fprintf( stderr, "Erreur nombre de lignes \n");
 			MPI_Finalize();
 			return 0;
 		}
-	} 
-	else {	
+	}
+	else {
 	  fprintf( stderr, "Erreur taille \n");
 	  MPI_Finalize();
 	  return 0;

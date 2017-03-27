@@ -1,0 +1,73 @@
+Sur ordi : 
+
+2
+Rang 0 | Temps total de calcul : 18.8841 sec
+Rang 1 | Temps total de calcul : 18.8841 sec
+
+4
+Rang 1 | Temps total de calcul : 6.33867 sec
+Rang 3 | Temps total de calcul : 6.33677 sec
+Rang 0 | Temps total de calcul : 6.36012 sec
+Rang 2 | Temps total de calcul : 6.36196 sec
+
+8
+Rang 4 | Temps total de calcul : 5.61404 sec
+Rang 2 | Temps total de calcul : 5.63944 sec
+Rang 5 | Temps total de calcul : 5.62283 sec
+Rang 3 | Temps total de calcul : 5.6264 sec
+Rang 6 | Temps total de calcul : 5.61745 sec
+Rang 7 | Temps total de calcul : 5.62684 sec
+Rang 0 | Temps total de calcul : 5.69873 sec
+Rang 1 | Temps total de calcul : 5.69873 sec
+
+16
+Rang 8 | Temps total de calcul : 5.33621 sec
+Rang 14 | Temps total de calcul : 5.28943 sec
+Rang 7 | Temps total de calcul : 5.38163 sec
+Rang 9 | Temps total de calcul : 5.36378 sec
+Rang 6 | Temps total de calcul : 5.43166 sec
+Rang 5 | Temps total de calcul : 5.44604 sec
+Rang 1 | Temps total de calcul : 5.55885 sec
+Rang 15 | Temps total de calcul : 5.52849 sec
+Rang 2 | Temps total de calcul : 5.61659 sec
+Rang 12 | Temps total de calcul : 5.60953 sec
+Rang 13 | Temps total de calcul : 5.60347 sec
+Rang 3 | Temps total de calcul : 5.66156 sec
+Rang 11 | Temps total de calcul : 5.64777 sec
+Rang 10 | Temps total de calcul : 5.76604 sec
+Rang 0 | Temps total de calcul : 5.95502 sec
+Rang 4 | Temps total de calcul : 5.90874 sec
+
+32
+Rang 21 | Temps total de calcul : 4.87835 sec
+Rang 14 | Temps total de calcul : 4.96605 sec
+Rang 23 | Temps total de calcul : 4.94374 sec
+Rang 20 | Temps total de calcul : 4.96719 sec
+Rang 31 | Temps total de calcul : 4.92732 sec
+Rang 18 | Temps total de calcul : 4.99209 sec
+Rang 30 | Temps total de calcul : 4.94877 sec
+Rang 15 | Temps total de calcul : 5.01801 sec
+Rang 29 | Temps total de calcul : 4.97739 sec
+Rang 2 | Temps total de calcul : 5.12677 sec
+Rang 19 | Temps total de calcul : 5.10957 sec
+Rang 17 | Temps total de calcul : 5.19229 sec
+Rang 22 | Temps total de calcul : 5.23714 sec
+Rang 27 | Temps total de calcul : 5.22666 sec
+Rang 11 | Temps total de calcul : 5.28394 sec
+Rang 24 | Temps total de calcul : 5.31219 sec
+Rang 25 | Temps total de calcul : 5.36653 sec
+Rang 26 | Temps total de calcul : 5.68716 sec
+Rang 28 | Temps total de calcul : 5.66304 sec
+Rang 16 | Temps total de calcul : 6.6346 sec
+Rang 1 | Temps total de calcul : 6.69792 sec
+Rang 3 | Temps total de calcul : 6.90212 sec
+Rang 13 | Temps total de calcul : 6.88613 sec
+Rang 12 | Temps total de calcul : 7.1387 sec
+Rang 4 | Temps total de calcul : 7.22854 sec
+Rang 10 | Temps total de calcul : 7.29178 sec
+Rang 5 | Temps total de calcul : 7.31189 sec
+Rang 6 | Temps total de calcul : 7.49401 sec
+Rang 9 | Temps total de calcul : 7.59892 sec
+Rang 0 | Temps total de calcul : 7.7279 sec
+Rang 8 | Temps total de calcul : 7.74399 sec
+Rang 7 | Temps total de calcul : 7.76593 sec

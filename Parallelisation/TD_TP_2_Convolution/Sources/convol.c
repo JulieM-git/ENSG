@@ -1,6 +1,6 @@
 /*
- * Programmation Parall√®le - Mars 2017
- * ENSG (Ecole nationale des siences g√©ographiques)
+ * Programmation ParallËle - Mars 2017
+ * ENSG (Ecole nationale des siences gÈographiques)
  * Calcul de convolution sur une image.
  * By Ahmad AUDI (IGN/DRE/LaSTIG/LOEMI) 
  */
@@ -11,20 +11,18 @@
 #include <math.h>   /* pour le rint */
 #include <string.h> /* pour le memcpy */
 #include <time.h>   /* chronometrage */
-#include <mpi.h>
 
 #include "rasterfile.h"
 
 #define MAX(a,b) ((a>b) ? a : b)
-#define MAITRE 0
 
 /** 
  * \struct Raster
- * Structure d√©crivant une image au format Sun Raster
+ * Structure dÈcrivant une image au format Sun Raster
  */
 
 typedef struct {
-  struct rasterfile file;  ///< Ent√™te image Sun Raster
+  struct rasterfile file;  ///< EntÍte image Sun Raster
   unsigned char rouge[256],vert[256],bleu[256];  ///< Palette de couleur
   unsigned char *data;    ///< Pointeur vers l'image
 } Raster;
@@ -44,7 +42,7 @@ double my_gettimeofday(){
 /**
  * Cette procedure convertit un entier LINUX en un entier SUN 
  *
- * \param i pointeur vers l'entier √† convertir
+ * \param i pointeur vers l'entier ‡ convertir
  */
 
 void swap(int *i) {
@@ -61,15 +59,15 @@ void swap(int *i) {
  * \brief Lecture d'une image au format Sun RASTERFILE.
  *
  * Au retour de cette fonction, la structure r est remplie
- * avec les donn√©es li√©e √† l'image. Le champ r.file contient
+ * avec les donnÈes liÈe ‡ l'image. Le champ r.file contient
  * les informations de l'entete de l'image (dimension, codage, etc).
- * Le champ r.data est un pointeur, allou√© par la fonction
+ * Le champ r.data est un pointeur, allouÈ par la fonction
  * lire_rasterfile() et qui contient l'image. Cette espace doit
- * √™tre lib√©r√© apr√®s usage.
+ * Ítre libÈrÈ aprËs usage.
  *
  * \param nom nom du fichier image
  * \param r structure Raster qui contient l'image
- *  charg√©e en m√©moire
+ *  chargÈe en mÈmoire
  */
 
 void lire_rasterfile(char *nom, Raster *r) {
@@ -80,7 +78,7 @@ void lire_rasterfile(char *nom, Raster *r) {
     fprintf(stderr,"erreur a la lecture du fichier %s\n", nom);
     exit(1);
   }
-  int frr = fread( &(r->file), sizeof(struct rasterfile), 1, f);    
+  fread( &(r->file), sizeof(struct rasterfile), 1, f);    
   swap(&(r->file.ras_magic));
   swap(&(r->file.ras_width));
   swap(&(r->file.ras_height));
@@ -105,7 +103,7 @@ void lire_rasterfile(char *nom, Raster *r) {
     fprintf(stderr,"erreur allocation memoire\n");
     exit(1);
   }
-  int fr = fread(r->data,r->file.ras_width*r->file.ras_height,1,f);
+  fread(r->data,r->file.ras_width*r->file.ras_height,1,f);
   fclose(f);
 }
 
@@ -144,10 +142,10 @@ void sauve_rasterfile(char *nom, Raster *r)     {
 }
 
 /**
- * R√©alise une division d'entiers plus pr√©cise que
- * l'op√©rateur '/'.
+ * RÈalise une division d'entiers plus prÈcise que
+ * l'opÈrateur '/'.
  * Remarque : la fonction rint provient de la librairie 
- * math√©matique.
+ * mathÈmatique.
  */
 
 unsigned char division(int numerateur,int denominateur) {
@@ -168,11 +166,11 @@ typedef enum {
   CONVOL_MOYENNE2, ///< Filtre moyenneur central
   CONVOL_CONTOUR1, ///< Laplacien
   CONVOL_CONTOUR2, ///< Max gradient
-  CONVOL_MEDIAN    ///< Filtre m√©dian
+  CONVOL_MEDIAN    ///< Filtre mÈdian
 } filtre_t;
 
 /**
- * R√©alise une op√©ration de convolution avec un noyau pr√©d√©fini sur
+ * RÈalise une opÈration de convolution avec un noyau prÈdÈfini sur
  * un point.
  *
  * \param choix type de noyau pour la convolution :
@@ -180,11 +178,11 @@ typedef enum {
  *  - CONVOL_MOYENNE2 : filtre moyenneur avec un poid central plus fort
  *  - CONVOL_CONTOUR1 : filtre extracteur de contours (laplacien)
  *  - CONVOL_CONTOUR2 : filtre extracteur de contours (max des composantes du gradient)
- *  - CONVOL_MEDIAN : filtre m√©dian (les 9 valeurs sont tri√©es et la valeur
- *     m√©diane est retourn√©e).
+ *  - CONVOL_MEDIAN : filtre mÈdian (les 9 valeurs sont triÈes et la valeur
+ *     mÈdiane est retournÈe).
  * \param NO,N,NE,O,CO,E,SO,S,SE: les valeurs des 9 points
- *  concern√©s pour le calcul de la convolution (cette derni√®re est
- *  formellement une combinaison lin√©aire de ces 9 valeurs).
+ *  concernÈs pour le calcul de la convolution (cette derniËre est
+ *  formellement une combinaison linÈaire de ces 9 valeurs).
  * \return la valeur de convolution.
  */
 
@@ -237,7 +235,7 @@ unsigned char filtre( filtre_t choix,
 }
 
 /**
- * Convolution d'une image par un filtre pr√©d√©fini
+ * Convolution d'une image par un filtre prÈdÈfini
  * \param choix choix du filtre (voir la fonction filtre())
  * \param tab pointeur vers l'image
  * \param nbl, nbc dimension de l'image
@@ -269,7 +267,7 @@ int convolution( filtre_t choix, unsigned char tab[],int nbl,int nbc) {
   
   /* Recopie de l'image apres traitement dans l'image initiale,
    * On remarquera que la premiere, la derniere ligne, la premiere
-   * et la derniere colonne ne sont pas copi√©es (ce qui force a faire
+   * et la derniere colonne ne sont pas copiÈes (ce qui force a faire
    * la copie ligne par ligne). */
   for( i=1; i<nbl-1; i++){
     memcpy( tab+nbc*i+1, tmp+nbc*i+1, (nbc-2)*sizeof(unsigned char));
@@ -305,129 +303,41 @@ int main(int argc, char *argv[]) {
 
   /* Variables de boucle */
   int 	i,j;
-  
-  /* Nombre de processus */
-  int P = 0;
-  
-  /* Image resultat */
-  unsigned char	*ima;
-  /* Image debut/fin */
-  unsigned char *ima_deb, *ima_fin;
-  
-  /* Parallelisme */
-  int rank;
-	MPI_Status status;
-	MPI_Request request1, request2;
-	
-  MPI_Init(&argc, &argv);
-  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-  MPI_Comm_size(MPI_COMM_WORLD, &P);
+
 
   if (argc != 4) {
     fprintf( stderr, usage, argv[0]);
     return 1;
   }
       
-  /* Saisie des param√®tres */
+  /* Saisie des paramËtres */
   filtre = atoi(argv[2]);
   nbiter = atoi(argv[3]);
-  
+        
+  /* Lecture du fichier Raster */
+  lire_rasterfile( argv[1], &r);
+  h = r.file.ras_height;
+  w = r.file.ras_width;
+    
   /* debut du chronometrage */
   debut = my_gettimeofday();            
-	if (rank == MAITRE) {	      
-			/* Lecture du fichier Raster */
-			lire_rasterfile( argv[1], &r);
-			h = r.file.ras_height;
-			w = r.file.ras_width;
-	}
-	
-	MPI_Bcast(&h,1, MPI_INT, MAITRE, MPI_COMM_WORLD);
-	MPI_Bcast(&w,1, MPI_INT, MAITRE, MPI_COMM_WORLD);			
-	
-		/* si non divisible */	
-	if (h % P	!= 0) {
-			printf( "Erreur nombre de procceseurs \n");
-			MPI_Finalize();
-			return 0;
-	}
-	int H_local = (h / P) + (rank > 0 ? 1:0) + (rank < P-1 ? 1:0);
-	
-	/* Block */
-	ima = (unsigned char *)malloc(w*H_local*sizeof(unsigned char));
-	
-	if( ima == NULL) {
-		fprintf( stderr, "Erreur allocation m√©moire du tableau \n");
-		MPI_Finalize();
-		return 0;
-	}
-	
-	MPI_Scatter(r.data, w*h/P, MPI_CHAR, ima + (rank > 0 ? w:0), w*h/P, MPI_CHAR, MAITRE, MPI_COMM_WORLD);
-	
-	/* 3 Premi√®res/Dernieres lignes */
-	ima_deb = (unsigned char *)malloc(w*3*sizeof(unsigned char));
 
-	ima_fin = (unsigned char *)malloc(w*3*sizeof(unsigned char));
-  
-	
-	/* La convolution a proprement parler */
-	for(i=0 ; i < nbiter ; i++){
-		if (rank > 0) {
-			/* Premi√®re ligne */
-			MPI_Isend(ima + w, w, MPI_CHAR, rank - 1, 0, MPI_COMM_WORLD, &request1);
-			memcpy(ima_deb + w, ima + w, 2*w);
-			//printf("%d Envoi d√©but √† %i \n", rank, rank-1);
-		}
-		if (rank < P-1) {
-			/* Derni√®re ligne */
-			MPI_Isend(ima + w * (H_local - 2), w , MPI_CHAR, rank + 1, 0, MPI_COMM_WORLD, &request2);
-			memcpy(ima_fin, ima + w * (H_local - 3), 2*w); 
-			//printf("%d Envoi fin √† %i \n", rank, rank+1);
-		}
-		/* Convolution de 1 √† H_local - 1 */
-		convolution( filtre, ima + w, H_local-2, w);	
-		if (rank > 0) {
-			/* Premi√®re ligne */
-			MPI_Irecv(ima, w, MPI_CHAR, rank - 1, 0, MPI_COMM_WORLD, &request1);
-			memcpy(ima_deb, ima, w);	
-			//printf("%d Recoit d√©but de %i \n", rank, rank-1);
-		}
-		if (rank < P-1) {
-			/* Derni√®re ligne */
-			MPI_Irecv(ima + w * (H_local - 1), w, MPI_CHAR, rank + 1, 0, MPI_COMM_WORLD, &request2);
-			memcpy(ima_fin + 2*w, ima + w * (H_local - 1), w); 	
-			//printf("%d Recoit fin de %i \n", rank, rank+1);
-		}
-		if (rank > 0) {
-			MPI_Wait(&request1, &status);
-			/* Convolution de 1 */
-			convolution( filtre, ima_deb, 3, w);
-			memcpy(ima + w, ima_deb + w, w);
-			//printf("%d convolution d√©but de l'it√©ration %d \n", rank, i);
-		}
-		if (rank < P-1) {
-			MPI_Wait(&request2, &status);
-			/* Convolution de H_local - 1 */
-			convolution( filtre, ima_fin, 3, w);	
-			memcpy(ima + w * (H_local - 2), ima_fin + w, w);
-			//printf("%d convolution fin de l'it√©ration %d \n", rank, i);
-		}
-			
-	}
-	
-	MPI_Gather(ima + (rank > 0 ? w:0), w*h/P, MPI_CHAR, r.data, w*h/P, MPI_CHAR, MAITRE, MPI_COMM_WORLD);
-	//printf("Tous ensemble \n");
+  /* La convolution a proprement parler */
+  for(i=0 ; i < nbiter ; i++){
+    convolution( filtre, r.data, h, w);
+  } /* for i */
+
   /* fin du chronometrage */
   fin = my_gettimeofday();
-  printf("Temps total de calcul de %i: %g seconde(s) \n", rank, fin - debut);
+  printf("Temps total de calcul : %g seconde(s) \n", fin - debut);
     
-  /* Sauvegarde du fichier Raster */
-  if (rank == MAITRE) { 
+    /* Sauvegarde du fichier Raster */
+  { 
     char nom_sortie[100] = "";
     sprintf(nom_sortie, "post-convolution2_filtre%d_nbIter%d.ras", filtre, nbiter);
     sauve_rasterfile(nom_sortie, &r);
   }
-  
-	MPI_Finalize();
+
   return 0;
 }
 

@@ -1,9 +1,8 @@
 /*
- * Programmation Parallèle - Avril 2012
- * Polytech'Paris 
- * Université Pierre et Marie Curie
- * Calcul de l'ensemble de Mandelbrot, Version séquentielle
- */
+Calcul de l'ensemble de Mandelbrot
+
+ModifiÃ© par Julie Marcuzzi
+*/
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -46,7 +45,7 @@ double my_gettimeofday(){
 
 /**
  * Convertion entier (4 octets) LINUX en un entier SUN
- * @param i entier à convertir
+ * @param i entier Ã  convertir
  * @return entier converti
  */
 
@@ -113,7 +112,7 @@ unsigned char cos_composante(int i, double freq) {
 
 
 /**
- *  Sauvegarde le tableau de données au format rasterfile
+ *  Sauvegarde le tableau de donnÃ©es au format rasterfile
  *  8 bits avec une palette de 256 niveaux de gris du blanc (valeur 0)
  *  vers le noir (255)
  *    @param nom Nom de l'image
@@ -176,19 +175,19 @@ void sauver_rasterfile( char *nom, int largeur, int hauteur, unsigned char *p) {
 }
 
 /**
- * Étant donnée les coordonnées d'un point \f$c=a+ib\f$ dans le plan
+ * Ã‰tant donnÃ©e les coordonnÃ©es d'un point \f$c=a+ib\f$ dans le plan
  * complexe, la fonction retourne la couleur correspondante estimant
- * à quelle distance de l'ensemble de mandelbrot le point est.
- * Soit la suite complexe défini par:
+ * Ã  quelle distance de l'ensemble de mandelbrot le point est.
+ * Soit la suite complexe dÃ©fini par:
  * \f[
  * \left\{\begin{array}{l}
  * z_0 = 0 \\
  * z_{n+1} = z_n^2 - c
  * \end{array}\right.
  * \f]
- * le nombre d'itérations que la suite met pour diverger est le
+ * le nombre d'itÃ©rations que la suite met pour diverger est le
  * nombre \f$ n \f$ pour lequel \f$ |z_n| > 2 \f$. 
- * Ce nombre est ramené à une valeur entre 0 et 255 correspond ainsi a 
+ * Ce nombre est ramenÃ© Ã  une valeur entre 0 et 255 correspond ainsi a 
  * une couleur dans la palette des couleurs.
  */
 
@@ -198,7 +197,7 @@ unsigned char xy2color(double a, double b, int prof) {
 
   x = y = 0.;
   for( i=0; i<prof; i++) {
-    /* garder la valeur précédente de x qui va etre ecrase */
+    /* garder la valeur prÃ©cÃ©dente de x qui va etre ecrase */
     temp = x;
     /* nouvelles valeurs de x et y */
     x2 = x*x;
@@ -267,7 +266,7 @@ int main(int argc, char *argv[]) {
   pima = ima = (unsigned char *)malloc( w*h*sizeof(unsigned char));
   
   if( ima == NULL) {
-    fprintf( stderr, "Erreur allocation mémoire du tableau \n");
+    fprintf( stderr, "Erreur allocation mÃ©moire du tableau \n");
     return 0;
   }
  

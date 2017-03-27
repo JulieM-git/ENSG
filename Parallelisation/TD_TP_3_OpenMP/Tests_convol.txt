@@ -1,0 +1,12 @@
+export OMP_NUM_THREADS=1
+./convol_openmp femme10.ras 4 100
+Temps total de calcul : 2.44535 seconde(s)
+export OMP_NUM_THREADS=2
+./convol_openmp femme10.ras 4 100
+Temps total de calcul : 1.24005 seconde(s)
+export OMP_NUM_THREADS=4
+./convol_openmp femme10.ras 4 100
+Temps total de calcul : 1.10771 seconde(s)
+export OMP_NUM_THREADS=8
+./convol_openmp femme10.ras 4 100
+Temps total de calcul : 0.973735 seconde(s)
