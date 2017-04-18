@@ -1,5 +1,10 @@
 # docker
 
+### Utilisation du docker-compose ###
+```
+docker-compose up -d
+```
+
 ### Trucs et astuces ###
 - Supprimer tous les conteneurs
 ```
