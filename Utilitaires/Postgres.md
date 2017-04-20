@@ -58,3 +58,8 @@ Liste des colonnes d'une table :
 ```sh
 postgres=# \d+ table_name  
 ```
+
+Accès pour l'exterieur, modifier :
+
+> gedit /etc/postgresql/9.4/main/pg_hba.conf
+> gedit /etc/postgresql/9.4/main/postgresql.conf
